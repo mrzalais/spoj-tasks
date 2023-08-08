@@ -2,109 +2,57 @@
 
 $stream = STDIN;
 
-$t = intval(trim(fgets($stream)));
+$testCases = intval(trim(fgets($stream)));
 
-while ($t--) {
+while ($testCases--) {
+    fgets($stream);
+
     fscanf($stream, "%d %d", $m, $n);
 
-    $sum = 0;
     $x = [];
     $y = [];
-    $maxCost = 0;
 
     for ($i = 0; $i < $m - 1; $i++) {
-        $cost = fgets($stream);
-        $x[] = (int) $cost;
-        if ($cost > $maxCost) {
-            $maxCost = (int) $cost;
-        }
+        $cost = intval(trim(fgets($stream)));
+        $x[] = $cost;
     }
 
     for ($i = 0; $i < $n - 1; $i++) {
-        $cost = fgets($stream);
-        $y[] = (int) $cost;
-        if ($cost > $maxCost) {
-            $maxCost = (int) $cost;
+        $cost = intval(trim(fgets($stream)));
+        $y[] = $cost;
+    }
+
+    sort($x); // Sort the x and y arrays in ascending order
+    sort($y);
+
+    $totalCost = 0;
+
+    $horizontalCuts = 1;
+    $verticalCuts = 1;
+
+    while (!empty($x) && !empty($y)) {
+        if ($x[count($x) - 1] > $y[count($y) - 1]) {
+            $totalCost += $x[count($x) - 1] * $verticalCuts;
+            array_pop($x);
+            $horizontalCuts++;
+        } else {
+            $totalCost += $y[count($y) - 1] * $horizontalCuts;
+            array_pop($y);
+            $verticalCuts++;
         }
     }
 
-    $maxCount = max($m, $n);
-
-    $chocolatePieces = [
-        [
-            'x' => $x, 'y' => $y
-        ]
-    ];
-
-    while (!empty($chocolatePieces)) {
-        $newChocolatePieces = [];
-        foreach ($chocolatePieces as $key => $chocolatePiece) {
-            for ($i = 0; $i < $maxCount - 1; $i++) {
-                if (isset($chocolatePiece['x'][$i]) && $chocolatePiece['x'][$i] === $maxCost) {
-                    $sum += $chocolatePiece['x'][$i];
-
-                    $xLeft = array_slice($chocolatePiece['x'], 0, $i);
-                    $xRight = array_slice($chocolatePiece['x'], $i + 1, count($x));
-                    if (count($xLeft) === 0) {
-                        $sum += array_sum($chocolatePiece['y']);
-                    } else {
-                        $newChocolatePieces [] = [
-                            'x' => $xLeft,
-                            'y' => $chocolatePiece['y'],
-                        ];
-                    }
-
-                    if (count($xRight) === 0) {
-                        $sum += array_sum($chocolatePiece['y']);
-                    } else {
-                        $newChocolatePieces [] = [
-                            'x' => $xRight,
-                            'y' => $chocolatePiece['y'],
-                        ];
-                    }
-
-                    unset($chocolatePiece[$key]['x'][$i]);
-                    $i = -1;
-                    break;
-                } elseif (isset($chocolatePiece['y'][$i]) && $chocolatePiece['y'][$i] === $maxCost) {
-                    $sum += $chocolatePiece['y'][$i];
-
-                    $yTop = array_slice($chocolatePiece['y'], 0, $i);
-                    $yBottom = array_slice($chocolatePiece['y'], $i + 1, count($chocolatePiece['y']));
-
-                    if (count($yTop) === 0) {
-                        $sum += array_sum($chocolatePiece['x']);
-                    } else {
-                        $newChocolatePieces [] = [
-                            'x' => $chocolatePiece['x'],
-                            'y' => $yTop,
-                        ];
-                    }
-
-                    if (count($yBottom) === 0) {
-                        $sum += array_sum($chocolatePiece['x']);
-                    } else {
-                        $newChocolatePieces [] = [
-                            'x' => $chocolatePiece['x'],
-                            'y' => $yBottom,
-                        ];
-                    }
-
-                    unset($chocolatePiece[$key]['y'][$i]);
-                    $i = -1;
-                    break;
-                }
-
-                if ($i === $maxCount - 2 && $maxCost !== 0) {
-                    $maxCost--;
-                    $maxCount--;
-                    $i = -1;
-                }
-
-            }
-
-        }
-        $chocolatePieces = $newChocolatePieces;
+    while (!empty($x)) {
+        $totalCost += $x[count($x) - 1] * $verticalCuts;
+        array_pop($x);
+        $horizontalCuts++;
     }
-    echo $sum;
+
+    while (!empty($y)) {
+        $totalCost += $y[count($y) - 1] * $horizontalCuts;
+        array_pop($y);
+        $verticalCuts++;
+    }
+
+    echo $totalCost . PHP_EOL;
 }
