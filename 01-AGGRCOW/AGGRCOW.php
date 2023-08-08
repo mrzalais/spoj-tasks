@@ -1,7 +1,5 @@
 <?php
 
-//$input = fopen('input', 'r');
-
 $stream = STDIN;
 
 $testCount = intval(trim(fgets($stream)));

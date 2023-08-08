@@ -1,6 +1,8 @@
 <?php
 
-$testCount = intval(trim(fgets(STDIN)));
+$stream = STDIN;
+
+$testCount = intval(trim(fgets($stream)));
 
 $winningCombos = [
     [0, 1, 2],
@@ -23,10 +25,10 @@ while ($testCount--) {
 
     $line = '';
     for ($i = 0; $i < 3; $i++) {
-        $line .= trim(fgets(STDIN));
+        $line .= trim(fgets($stream));
     }
 
-    fgets(STDIN);
+    fgets($stream);
 
     $values = str_split($line);
     $counts = array_merge($counts, array_count_values($values));

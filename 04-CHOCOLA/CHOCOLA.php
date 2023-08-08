@@ -1,10 +1,11 @@
 <?php
 
-$t = intval(trim(fgets(STDIN)));
+$stream = STDIN;
+
+$t = intval(trim(fgets($stream)));
 
 while ($t--) {
-//Get input from STDIN
-    fscanf(STDIN, "%d %d", $m, $n);
+    fscanf($stream, "%d %d", $m, $n);
 
     $sum = 0;
     $x = [];
@@ -12,7 +13,7 @@ while ($t--) {
     $maxCost = 0;
 
     for ($i = 0; $i < $m - 1; $i++) {
-        $cost = fgets(STDIN);
+        $cost = fgets($stream);
         $x[] = (int) $cost;
         if ($cost > $maxCost) {
             $maxCost = (int) $cost;
@@ -20,7 +21,7 @@ while ($t--) {
     }
 
     for ($i = 0; $i < $n - 1; $i++) {
-        $cost = fgets(STDIN);
+        $cost = fgets($stream);
         $y[] = (int) $cost;
         if ($cost > $maxCost) {
             $maxCost = (int) $cost;
