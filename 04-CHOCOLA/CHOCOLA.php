@@ -22,7 +22,7 @@ while ($testCases--) {
         $y[] = $cost;
     }
 
-    sort($x); // Sort the x and y arrays in ascending order
+    sort($x);
     sort($y);
 
     $totalCost = 0;

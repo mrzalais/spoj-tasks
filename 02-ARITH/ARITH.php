@@ -1,6 +1,5 @@
 <?php
 
-//$stream = fopen('input', 'r');
 $stream = STDIN;
 
 //replace echo statements to fwrite($output, ...) to see results
@@ -8,9 +7,8 @@ $output = fopen('output', 'w');
 
 $testCount = intval(trim(fgets($stream)));
 
-function sum(string $num1, string $num2, int $length1, int $length2): string
+function sum(string $num1, string $num2, int $maxLength): string
 {
-    $maxLength = max($length1, $length2);
     $num1 = str_pad($num1, $maxLength, '0', STR_PAD_LEFT);
     $num2 = str_pad($num2, $maxLength, '0', STR_PAD_LEFT);
 
@@ -42,9 +40,8 @@ function printSum(string $num1, string $num2, string $sum, int $length1, int $le
     echo(str_repeat(' ', $whitespaceWidth - strlen($sum)) . $sum);
 }
 
-function subtract(string $num1, string $num2, int $length1, int $length2): string
+function subtract(string $num1, string $num2, int $maxLength): string
 {
-    $maxLength = max($length1, $length2);
     $num1 = str_pad($num1, $maxLength, '0', STR_PAD_LEFT);
     $num2 = str_pad($num2, $maxLength, '0', STR_PAD_LEFT);
 
@@ -146,14 +143,15 @@ while ($testCount--) {
 
     $length1 = strlen($num1);
     $length2 = strlen($num2);
+    $maxLength = max($length1, $length2);
 
     switch ($sign) {
         case '+':
-            $sum = sum($num1, $num2, $length1, $length2);
+            $sum = sum($num1, $num2, $maxLength);
             printSum($num1, $num2, $sum, $length1, $length2, $output);
             break;
         case '-':
-            $subtraction = subtract($num1, $num2, $length1, $length2);
+            $subtraction = subtract($num1, $num2, $maxLength);
             printSubtraction($num1, $num2, $subtraction, $length1, $length2, $output);
             break;
         case '*':
